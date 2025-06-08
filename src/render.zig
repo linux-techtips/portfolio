@@ -3,6 +3,13 @@ const std = @import("std");
 
 const log = std.log.scoped(.render);
 
+pub const markdown_fragments = struct {
+    pub const h1 = .{
+        "<h1 class='bar'>",
+        "</h1>",
+    };
+};
+
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}).init;
     defer _ = gpa.deinit();

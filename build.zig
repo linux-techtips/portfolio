@@ -11,6 +11,12 @@ pub fn build(b: *std.Build) !void {
         .use_llvm = use_llvm,
         .optimize = optimize,
         .target = target,
+        .zmpl_markdown_fragments = try genMarkdownFragments(b, "src/render.zig"),
+    });
+
+    const zmd_dep = b.dependency("zmd", .{
+        .optimize = optimize,
+        .target = target,
     });
 
     const zmpl_compile = zmpl_dep.builder.top_level_steps.get("compile").?;
@@ -23,6 +29,7 @@ pub fn build(b: *std.Build) !void {
             .target = target,
             .imports = &.{
                 .{ .name = "zmpl", .module = zmpl_dep.module("zmpl") },
+                .{ .name = "zmd", .module = zmd_dep.module("zmd") },
             },
         }),
         .use_llvm = use_llvm,
@@ -64,4 +71,44 @@ pub fn build(b: *std.Build) !void {
     if (b.args) |args| serve_run.addArgs(args);
 
     b.getInstallStep().dependOn(&serve_exe_install.step);
+}
+
+fn genMarkdownFragments(b: *std.Build, path: []const u8) ![]const u8 {
+    const file = std.fs.cwd().openFile(path, .{}) catch |err| switch (err) {
+        error.FileNotFound => return "",
+        else => return err,
+    };
+
+    const stat = try file.stat();
+    const source = try file.readToEndAllocOptions(b.allocator, @intCast(stat.size), null, .of(u8), 0);
+
+    if (try getMarkdownFragmentSource(b.allocator, source[0.. :0])) |fragments| {
+        return std.fmt.allocPrint(b.allocator,
+            \\const std = @import("std");
+            \\const zmd = @import("zmd");
+            \\
+            \\{s};
+            \\
+        , .{fragments});
+    }
+
+    return "";
+}
+
+fn getMarkdownFragmentSource(allocator: std.mem.Allocator, source: [:0]const u8) !?[]const u8 {
+    var ast = try std.zig.Ast.parse(allocator, source, .zig);
+    defer ast.deinit(allocator);
+
+    search: for (ast.nodes.items(.tag), 0..) |tag, i| {
+        switch (tag) {
+            .simple_var_decl => {
+                const decl = ast.simpleVarDecl(@enumFromInt(i));
+                const ident = ast.tokenSlice(decl.ast.mut_token + 1);
+                if (std.mem.eql(u8, ident, "markdown_fragments")) return ast.getNodeSource(@enumFromInt(i));
+            },
+            else => continue :search,
+        }
+    }
+
+    return null;
 }
