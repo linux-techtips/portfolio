@@ -1,11 +1,19 @@
 const std = @import("std");
 
-pub fn build(b: *std.Build) void {
+pub fn build(b: *std.Build) !void {
     const optimize = b.standardOptimizeOption(.{});
     const target = b.standardTargetOptions(.{});
 
     const use_llvm = b.option(bool, "use_llvm", "use llvm?") orelse false;
     const use_lld = b.option(bool, "use_lld", "use lld?") orelse false;
+
+    const zmpl_dep = b.dependency("zmpl", .{
+        .use_llvm = use_llvm,
+        .optimize = optimize,
+        .target = target,
+    });
+
+    const zmpl_compile = zmpl_dep.builder.top_level_steps.get("compile").?;
 
     const render_exe = b.addExecutable(.{
         .name = "render",
@@ -13,19 +21,22 @@ pub fn build(b: *std.Build) void {
             .root_source_file = b.path("src/render.zig"),
             .optimize = optimize,
             .target = target,
-            .imports = &.{},
+            .imports = &.{
+                .{ .name = "zmpl", .module = zmpl_dep.module("zmpl") },
+            },
         }),
         .use_llvm = use_llvm,
         .use_lld = use_lld,
     });
 
     const render_exe_install = b.addInstallArtifact(render_exe, .{});
-
-    const render_step = b.step("render", "render the site");
-    render_step.dependOn(&render_exe_install.step);
+    render_exe_install.step.dependOn(&zmpl_compile.step);
 
     const render_run = b.addRunArtifact(render_exe);
     render_run.step.dependOn(&render_exe_install.step);
+
+    const render_step = b.step("render", "render the site");
+    render_step.dependOn(&render_run.step);
 
     if (b.args) |args| render_run.addArgs(args);
 
