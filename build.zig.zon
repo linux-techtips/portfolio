@@ -1,0 +1,13 @@
+.{
+    .name = .portfolio,
+    .version = "0.0.0",
+    .fingerprint = 0xa9ed10623c0e8396, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.15.0-dev.764+2e3154428",
+    .dependencies = .{
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}
