@@ -1,13 +1,15 @@
 const zmpl = @import("zmpl");
+const zmd = @import("zmd");
 const std = @import("std");
 
 const log = std.log.scoped(.render);
 
 pub const markdown_fragments = struct {
-    pub const h1 = .{
-        "<h1 class='bar'>",
-        "</h1>",
-    };
+    pub fn block(allocator: std.mem.Allocator, node: zmd.Node) ![]const u8 {
+        return try std.fmt.allocPrint(allocator,
+            \\<pre><code class="language-{?s}">{s}</code></pre>
+        , .{ node.meta, node.content });
+    }
 };
 
 pub fn main() !void {

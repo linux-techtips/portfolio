@@ -1,6 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>linux-techtips</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/prism.css">
+</head>
+<script src="/prism.min.js"></script>
+<script src="/htmx.min.js"></script>
 <body>
-<main><h1 class='bar'>Hello World</h1></main>
+    <main>
+        <h1>Carter Vavra</h1>
+
+        <p>Hello, my name is Carter and I made this website. I think it's kinda cool ig.</p>
+        <h2>This is slightly less important</h2>
+
+        <blockquote>I'm just going to quote something</blockquote>
+
+        <p>This is a test for some inline <code class="language-zig">hello()</code> stuff</p>
+
+        <div class="code-block">
+            <button class="code-copy">Copy</button>
+<pre><code class="language-zig">const std = @import("std");
+
+pub fn main() !void {
+    std.debug.print("Hello World", .{});
+    2 + 2 = 4
+}</code></pre>
+        </div>
+        <h2>This is slightly less important</h2>
+        <h2>This is slightly less important</h2>
+        <h2>This is slightly less important</h2>
+        <h2>This is slightly less important</h2>
+    </main>
 </body>
 </html>

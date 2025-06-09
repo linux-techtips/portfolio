@@ -7,6 +7,11 @@ pub fn build(b: *std.Build) !void {
     const use_llvm = b.option(bool, "use_llvm", "use llvm?") orelse false;
     const use_lld = b.option(bool, "use_lld", "use lld?") orelse false;
 
+    const httpz_dep = b.dependency("httpz", .{
+        .optimize = optimize,
+        .target = target,
+    });
+
     const zmpl_dep = b.dependency("zmpl", .{
         .use_llvm = use_llvm,
         .optimize = optimize,
@@ -35,9 +40,9 @@ pub fn build(b: *std.Build) !void {
         .use_llvm = use_llvm,
         .use_lld = use_lld,
     });
+    render_exe.step.dependOn(&zmpl_compile.step);
 
     const render_exe_install = b.addInstallArtifact(render_exe, .{});
-    render_exe_install.step.dependOn(&zmpl_compile.step);
 
     const render_run = b.addRunArtifact(render_exe);
     render_run.step.dependOn(&render_exe_install.step);
@@ -53,7 +58,9 @@ pub fn build(b: *std.Build) !void {
             .root_source_file = b.path("src/serve.zig"),
             .optimize = optimize,
             .target = target,
-            .imports = &.{},
+            .imports = &.{
+                .{ .name = "httpz", .module = httpz_dep.module("httpz") },
+            },
         }),
         .use_llvm = use_llvm,
         .use_lld = use_lld,
