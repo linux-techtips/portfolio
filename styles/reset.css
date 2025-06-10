@@ -68,4 +68,7 @@ h6 {
 
 :any-link {
     text-decoration: none;
+    &:visited {
+        color: currentColor;
+    }
 }
