@@ -149,6 +149,103 @@ blockquote {
     border: solid 0.25rem var(--base0B);
 }
 
+/* Post Items Styling */
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.post-item {
+    background-color: var(--base01);
+    border: 2px solid var(--base03);
+    padding: 1.5rem;
+    transition: border-color 0.2s ease;
+}
+
+.post-item:hover {
+    border-color: var(--base08);
+}
+
+.post-item-header {
+    border-bottom: 1px solid var(--base02);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.post-item-title {
+    color: var(--base08);
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.post-item-date {
+    color: var(--base04);
+    font-size: 0.9rem;
+    margin: 0;
+    font-family: var(--font-code);
+}
+
+.post-item-description {
+    margin-bottom: 1rem;
+}
+
+.post-item-description p {
+    color: var(--base05);
+    line-height: 1.4;
+    margin-bottom: 0;
+}
+
+.post-item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--base02);
+}
+
+.post-item-tag {
+    background-color: var(--base02);
+    color: var(--base0A);
+    border: 1px solid var(--base03);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    font-family: var(--font-code);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.post-item-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.post-item-read-more {
+    background-color: var(--base02);
+    color: var(--base05) !important;
+    border: 2px solid var(--base08);
+    padding: 0.5rem 1rem;
+    text-decoration: none !important;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.post-item-read-more:hover {
+    background-color: var(--base08);
+    color: var(--base00) !important;
+}
+
 @container body (max-width: 672px) {
     h1 {
         font-size: 2rem;
@@ -156,5 +253,17 @@ blockquote {
 
     h2 {
         font-size: 1.5rem;
+    }
+
+    .post-item {
+        padding: 1rem;
+    }
+
+    .post-item-title {
+        font-size: 1.3rem;
+    }
+
+    .posts-container {
+        gap: 1.5rem;
     }
 }

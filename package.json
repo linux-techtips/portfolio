@@ -1,5 +1,16 @@
 {
+  "name": "portfolio-test",
+  "scripts": {
+    "dev": "bun run --watch src/index.jsx",
+    "bundle": "bun --hot src/bundle.js"
+  },
   "dependencies": {
-    "prismjs": "^1.30.0"
+    "frontmatter": "^0.0.3",
+    "highlight.js": "^11.11.1",
+    "hono": "^4.7.11",
+    "marked": "^15.0.12"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
   }
 }
