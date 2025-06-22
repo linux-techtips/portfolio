@@ -1,0 +1,6 @@
+<a
+    href="{{ url }}"
+    hx-get="{{ url }}"
+    hx-target="{{ target }}"
+    hx-swap="outerHTML transition:true"
+    hx-push-url="true">{{ body | safe }}</a>
