@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% import "macros.html" as macros %}
+
+{% block head %}
+<title>{{ section.title }} - linuxtechtips</title>
+{% endblock head %}
+
+{% block title %}
+<h1>{{ section.title }}</h1>
+{% endblock title %}
+
+{% block content %}
+{{ section.content | safe }}
+<div id="post-list">
+{% for post in section.pages %}
+    <article class="post-item">
+        <h2 class="title">{{ macros::HtmxLink(url=post.path, body=post.title) }}</h2>
+        <p class="desc">{{ post.description }}</p>
+        <footer>
+            <div class="meta">
+                <span class="date">{{ post.date | date(format="%Y-%m-%d") }}</span>
+                {% if post.extra.show_draft %}
+                    <span class="draft">Working Draft!</span>
+                {% endif %}
+            </div>
+
+           {{ macros::HtmxLink(url=post.path, body="<button>Read More</button>") }}
+        </footer>
+    </article>
+{% endfor %}
+</div>
+{% endblock content %}

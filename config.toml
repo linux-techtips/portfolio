@@ -1,0 +1,13 @@
+base_url = "https://linuxtechtips.dev"
+compile_sass = true
+build_search_index = false
+
+[markdown]
+highlight_code = true
+highlight_theme = "css"
+highlight_theme_css = [
+    { theme = "gruvbox-dark", filename = "code-theme-dark.css" },
+    { theme = "gruvbox-light", filename = "code-theme-light.css" },
+]
+
+[extra]

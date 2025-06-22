@@ -1,0 +1,10 @@
+#socials {
+    display: flex;
+    justify-content: flex-end;
+    transition: background-color 0.2s ease;
+    gap: var(--spacing-md);
+
+    a:any-link:where(:hover, :focus) {
+        background-color: var(--color-primary) !important;
+    }
+}

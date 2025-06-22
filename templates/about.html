@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>{{ section.title }} - linuxtechtips</title>
+{% endblock head %}
+
+{% block title %}
+<h1>{{ section.title }}</h1>
+{% endblock title %}
+
+{% block content %}
+{{ section.content | safe }}
+{% endblock content %}
